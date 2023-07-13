@@ -1,0 +1,15 @@
+mat-card {
+  border-radius: 0;
+  max-width: 80%;
+  margin: 2rem auto;
+  text-align: center;
+}
+
+mat-card-actions{
+  justify-content: center;
+  gap: 16px;
+}
+
+.full-width{
+  width: 100%;
+}
