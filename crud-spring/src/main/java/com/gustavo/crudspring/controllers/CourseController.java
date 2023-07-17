@@ -21,22 +21,32 @@ public class CourseController {
     return courseRepository.findAll();
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<Course> findById(@PathVariable Long id) {
-    return courseRepository.findById(id)
-            .map(record -> ResponseEntity.ok().body(record))
-            .orElse(ResponseEntity.notFound().build());
-  }
-
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
   public Course create(@RequestBody Course course) {
     return courseRepository.save(course);
   }
 
-//  outra forma de fazer o create acima, porém com a possibilidade de personalizar  a resposta, como os headers 
+  //  outra forma de fazer o create acima, porém com a possibilidade de personalizar  a resposta, como os headers
 //  @PostMapping
 //  public ResponseEntity<Course> create(@RequestBody Course course) {
 //    return ResponseEntity.status(HttpStatus.CREATED).body(courseRepository.save(course));
 //  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<Course> findById(@PathVariable long id) {
+    return courseRepository.findById(id)
+            .map(record -> ResponseEntity.ok().body(record))
+            .orElse(ResponseEntity.notFound().build());
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Course> update(@PathVariable long id, @RequestBody Course course){
+    return courseRepository.findById(id).map(record -> ResponseEntity.ok(courseRepository.save(course)))
+            .orElse(ResponseEntity.notFound().build());
+  }
+
+
+
+
 }
