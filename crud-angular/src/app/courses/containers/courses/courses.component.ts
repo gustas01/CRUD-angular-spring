@@ -25,16 +25,20 @@ export class CoursesComponent implements OnInit{
     );
    }
 
-   ngOnInit(): void {}
+  ngOnInit(): void {}
 
-   onAdd(){
-    this.router.navigate(['new'], {relativeTo: this.activatedRoute});
-   }
+  onAdd(){
+  this.router.navigate(['new'], {relativeTo: this.activatedRoute});
+  }
 
-   onError(errorMsg: string) {
-    this.dialog.open(ErrorDialogComponent, {
-      data: errorMsg
-    });
+  onEdit(course: Course){
+    this.router.navigate(['edit', course._id], {relativeTo: this.activatedRoute});
+  }
+
+  onError(errorMsg: string) {
+  this.dialog.open(ErrorDialogComponent, {
+    data: errorMsg
+  });
   }
 
 

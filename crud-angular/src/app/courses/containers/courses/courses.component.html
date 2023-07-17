@@ -2,7 +2,7 @@
   <mat-card-content>
     <mat-toolbar color="primary">Cursos disponíveis</mat-toolbar>
 
-      <app-courses-list *ngIf="courses$ | async as courses; else loading" [courses]="courses" (add)="onAdd()"/>
+      <app-courses-list *ngIf="courses$ | async as courses; else loading" [courses]="courses" (add)="onAdd()" (edit)="onEdit($event)"/>
 
       <ng-template #loading>
         <div class="loading-spinner">
