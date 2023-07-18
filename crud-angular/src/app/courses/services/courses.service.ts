@@ -34,9 +34,11 @@ export class CoursesService {
     return this.httpClient.put<Course>(`${this.APIUrl}/${course._id}`, course);
   }
 
-
-
   findById(id: string){
     return this.httpClient.get<Course>(`${this.APIUrl}/${id}`)
+  }
+
+  delete(id: string){
+    return this.httpClient.delete(`${this.APIUrl}/${id}`)
   }
 }

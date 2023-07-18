@@ -11,6 +11,7 @@ export class CoursesListComponent {
   @Input({required: true}) courses: Course[] = []
   @Output() add = new EventEmitter<boolean>()
   @Output() edit = new EventEmitter<Course>()
+  @Output() delete = new EventEmitter<Course>()
 
   readonly displayedColumns = ['name', 'category', 'actions']
 
@@ -21,6 +22,10 @@ export class CoursesListComponent {
    }
 
    onEdit(course: Course){
-      this.edit.emit(course)
+    this.edit.emit(course)
+   }
+
+   onDelete(course: Course){
+    this.delete.emit(course)
    }
 }

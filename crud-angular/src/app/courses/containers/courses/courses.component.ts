@@ -5,6 +5,7 @@ import { Observable, catchError, of } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-courses',
@@ -12,31 +13,46 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./courses.component.scss']
 })
 export class CoursesComponent implements OnInit{
-  courses$: Observable<Course[]>
+  courses$: Observable<Course[]> | null = null
 
 
-  constructor(private coursesService: CoursesService, public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute){
-    this.courses$ = this.coursesService.list()
-    .pipe(
-      catchError(error => {
-        this.onError('Erro ao carregar cursos.')
-        return of([])
-      })
-    );
+  constructor(private coursesService: CoursesService, public dialog: MatDialog, private router: Router, private activatedRoute: ActivatedRoute, private snackBar: MatSnackBar){
+    this.refresh()
    }
 
   ngOnInit(): void {}
 
   onAdd(){
-  this.router.navigate(['new'], {relativeTo: this.activatedRoute});
+    this.router.navigate(['new'], {relativeTo: this.activatedRoute});
   }
 
   onEdit(course: Course){
     this.router.navigate(['edit', course._id], {relativeTo: this.activatedRoute});
   }
 
+  onDelete(course: Course){
+    this.coursesService.delete(course._id).subscribe({
+      next: () => {
+        this.refresh()
+        this.snackBar.open("Curso deletado com sucesso!", 'X', { duration: 5000, verticalPosition: 'top', horizontalPosition: 'center'})
+      },
+      error: () => this.onError("Erro ao tentar remover curso!")
+    });
+
+  }
+
+  refresh(){
+     this.courses$ = this.coursesService.list()
+    .pipe(
+      catchError(error => {
+        this.onError('Erro ao carregar cursos.')
+        return of([])
+      })
+    );
+  }
+
   onError(errorMsg: string) {
-  this.dialog.open(ErrorDialogComponent, {
+    this.dialog.open(ErrorDialogComponent, {
     data: errorMsg
   });
   }
