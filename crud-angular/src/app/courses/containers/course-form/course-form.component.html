@@ -7,7 +7,9 @@
     <form action="" [formGroup]="form">
       <mat-form-field appearance="fill" class="full-width">
         <mat-label>Nome do curso</mat-label>
-        <input matInput placeholder="Nome" formControlName="name">
+        <input matInput placeholder="Nome" formControlName="name" #name>
+        <mat-hint align="end">{{name.value.length}}/100</mat-hint>
+        <mat-error *ngIf="form.get('name')?.invalid">{{getErrorMessage("name")}}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="full-width">
@@ -17,6 +19,7 @@
           <mat-option value="frontend">Frontend</mat-option>
           <mat-option value="backend">Backend</mat-option>
         </mat-select>
+        <mat-error *ngIf="form.get('category')?.invalid">{{getErrorMessage("category")}}</mat-error>
       </mat-form-field>
 
     </form>
