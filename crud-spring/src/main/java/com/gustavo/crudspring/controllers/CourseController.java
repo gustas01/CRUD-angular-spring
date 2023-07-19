@@ -2,10 +2,10 @@ package com.gustavo.crudspring.controllers;
 
 import com.gustavo.crudspring.models.Course;
 import com.gustavo.crudspring.repository.CourseRepository;
+import com.gustavo.crudspring.services.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,22 +15,25 @@ import java.util.List;
 
 
 @RestController
-@AllArgsConstructor
 @Validated
 @RequestMapping("/api/courses")
 public class CourseController {
 
-  private final CourseRepository courseRepository;
+  private final CourseService courseService;
+
+  public CourseController(CourseRepository courseRepository, CourseService courseService) {
+    this.courseService = courseService;
+  }
 
   @GetMapping
   public List<Course> index() {
-    return courseRepository.findAll();
+    return courseService.index();
   }
 
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
   public Course create(@RequestBody @Valid Course course) {
-    return courseRepository.save(course);
+    return courseService.create(course);
   }
 
   //  outra forma de fazer o create acima, porém com a possibilidade de personalizar  a resposta, como os headers
@@ -41,23 +44,23 @@ public class CourseController {
 
   @GetMapping("/{id}")
   public ResponseEntity<Course> findById(@PathVariable @Positive @NotNull Long id) {
-    return courseRepository.findById(id)
+    return courseService.findById(id)
             .map(record -> ResponseEntity.ok().body(record))
             .orElse(ResponseEntity.notFound().build());
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Course> update(@PathVariable @Positive @NotNull Long id, @RequestBody @Valid Course course){
-    return courseRepository.findById(id).map(record -> ResponseEntity.ok(courseRepository.save(course)))
-            .orElse(ResponseEntity.notFound().build());
+    return courseService.update(id, course).map(record -> ResponseEntity.ok().body(record))
+    .orElse(ResponseEntity.notFound().build());
   }
 
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> delete(@PathVariable @Positive @NotNull Long id){
-    return courseRepository.findById(id).map(record -> {
-      courseRepository.deleteById(id);
+    if(courseService.delete(id))
       return ResponseEntity.noContent().<Void>build();
-    }).orElse(ResponseEntity.notFound().build());
+    else
+      return ResponseEntity.notFound().build();
   }
 
 
