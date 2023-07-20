@@ -1,13 +1,12 @@
 package com.gustavo.crudspring.controllers;
 
-import com.gustavo.crudspring.models.Course;
+import com.gustavo.crudspring.DTOs.CourseDTO;
 import com.gustavo.crudspring.repository.CourseRepository;
 import com.gustavo.crudspring.services.CourseService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,13 +25,13 @@ public class CourseController {
   }
 
   @GetMapping
-  public List<Course> index() {
+  public List<CourseDTO> index() {
     return courseService.index();
   }
 
   @PostMapping
   @ResponseStatus(code = HttpStatus.CREATED)
-  public Course create(@RequestBody @Valid Course course) {
+  public CourseDTO create(@RequestBody @Valid CourseDTO course) {
     return courseService.create(course);
   }
 
@@ -43,12 +42,12 @@ public class CourseController {
 //  }
 
   @GetMapping("/{id}")
-  public Course findById(@PathVariable @Positive @NotNull Long id) {
+  public CourseDTO findById(@PathVariable @Positive @NotNull Long id) {
     return courseService.findById(id);
   }
 
   @PutMapping("/{id}")
-  public Course update(@PathVariable @Positive @NotNull Long id, @RequestBody @Valid Course course){
+  public CourseDTO update(@PathVariable @Positive @NotNull Long id, @RequestBody @Valid @NotNull CourseDTO course){
     return courseService.update(id, course);
   }
 
