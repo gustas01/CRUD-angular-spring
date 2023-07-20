@@ -43,24 +43,19 @@ public class CourseController {
 //  }
 
   @GetMapping("/{id}")
-  public ResponseEntity<Course> findById(@PathVariable @Positive @NotNull Long id) {
-    return courseService.findById(id)
-            .map(record -> ResponseEntity.ok().body(record))
-            .orElse(ResponseEntity.notFound().build());
+  public Course findById(@PathVariable @Positive @NotNull Long id) {
+    return courseService.findById(id);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Course> update(@PathVariable @Positive @NotNull Long id, @RequestBody @Valid Course course){
-    return courseService.update(id, course).map(record -> ResponseEntity.ok().body(record))
-    .orElse(ResponseEntity.notFound().build());
+  public Course update(@PathVariable @Positive @NotNull Long id, @RequestBody @Valid Course course){
+    return courseService.update(id, course);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable @Positive @NotNull Long id){
-    if(courseService.delete(id))
-      return ResponseEntity.noContent().<Void>build();
-    else
-      return ResponseEntity.notFound().build();
+  @ResponseStatus(code = HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable @Positive @NotNull Long id){
+   courseService.delete(id);
   }
 
 

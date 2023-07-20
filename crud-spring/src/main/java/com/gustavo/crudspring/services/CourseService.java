@@ -1,5 +1,6 @@
 package com.gustavo.crudspring.services;
 
+import com.gustavo.crudspring.exceptions.RecordNotFoundException;
 import com.gustavo.crudspring.models.Course;
 import com.gustavo.crudspring.repository.CourseRepository;
 import jakarta.validation.Valid;
@@ -31,22 +32,19 @@ public class CourseService {
     return courseRepository.save(course);
   }
 
-  public Optional<Course> findById(@PathVariable @Positive @NotNull Long id) {
-    return courseRepository.findById(id);
+  public Course findById(@PathVariable @Positive @NotNull Long id) {
+    return courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id));
   }
 
-  public Optional<Course> update(@Positive @NotNull Long id, @Valid Course course){
+  public Course update(@Positive @NotNull Long id, @Valid Course course){
 
     return courseRepository.findById(id).map(record -> {
       course.setId(record.getId());
       return courseRepository.save(course);
-    });
+    }).orElseThrow(() -> new RecordNotFoundException(id));
   }
 
-  public boolean delete(@PathVariable @Positive @NotNull Long id){
-    return courseRepository.findById(id).map(record -> {
-      courseRepository.deleteById(id);
-      return true;
-    }).orElse(false);
+  public void delete(@PathVariable @Positive @NotNull Long id){
+    courseRepository.delete(courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
   }
 }
