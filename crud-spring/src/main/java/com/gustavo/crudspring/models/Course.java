@@ -2,11 +2,12 @@ package com.gustavo.crudspring.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gustavo.crudspring.enums.Category;
+import com.gustavo.crudspring.enums.Status;
 import com.gustavo.crudspring.enums.converters.CategoryConverter;
+import com.gustavo.crudspring.enums.converters.StatusConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -35,8 +36,7 @@ public class Course {
   private Category category;
 
   @NotNull
-  @Length(max = 10)
-  @Pattern(regexp = "Ativo|Inativo")
   @Column(length = 10, nullable = false)
-  private String status = "Ativo";
+  @Convert(converter = StatusConverter.class)
+  private Status status = Status.ACTIVE;
 }

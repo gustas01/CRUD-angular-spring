@@ -34,7 +34,7 @@ public class CourseService {
     return courseMapper.toDTO(courseRepository.save(courseMapper.toEntity(course)));
   }
 
-  public CourseDTO findById(@PathVariable @Positive @NotNull Long id) {
+  public CourseDTO findById(@Positive @NotNull Long id) {
     return courseRepository.findById(id).map(courseMapper::toDTO).orElseThrow(() -> new RecordNotFoundException(id));
   }
 
@@ -42,12 +42,12 @@ public class CourseService {
 
     return courseRepository.findById(id).map(record -> {
       record.setName(course.name());
-      record.setCategory(Category.FRONTEND);
+      record.setCategory(courseMapper.convertCategoryValue(course.category()));
       return courseMapper.toDTO(courseRepository.save(record));
     }).orElseThrow(() -> new RecordNotFoundException(id));
   }
 
-  public void delete(@PathVariable @Positive @NotNull Long id){
+  public void delete(@Positive @NotNull Long id){
     courseRepository.delete(courseRepository.findById(id).orElseThrow(() -> new RecordNotFoundException(id)));
   }
 }
