@@ -2,6 +2,7 @@ package com.gustavo.crudspring.services;
 
 import com.gustavo.crudspring.DTOs.CourseDTO;
 import com.gustavo.crudspring.DTOs.mappers.CourseMapper;
+import com.gustavo.crudspring.enums.Category;
 import com.gustavo.crudspring.exceptions.RecordNotFoundException;
 import com.gustavo.crudspring.repository.CourseRepository;
 import jakarta.validation.Valid;
@@ -41,7 +42,7 @@ public class CourseService {
 
     return courseRepository.findById(id).map(record -> {
       record.setName(course.name());
-      record.setCategory(course.category());
+      record.setCategory(Category.FRONTEND);
       return courseMapper.toDTO(courseRepository.save(record));
     }).orElseThrow(() -> new RecordNotFoundException(id));
   }

@@ -1,6 +1,8 @@
 package com.gustavo.crudspring.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gustavo.crudspring.enums.Category;
+import com.gustavo.crudspring.enums.converters.CategoryConverter;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,10 +30,9 @@ public class Course {
   private String name;
 
   @NotNull
-  @Length(max = 10)
-  @Pattern(regexp = "Backend|Frontend")
   @Column(length = 10, nullable = false)
-  private String category;
+  @Convert(converter = CategoryConverter.class)
+  private Category category;
 
   @NotNull
   @Length(max = 10)

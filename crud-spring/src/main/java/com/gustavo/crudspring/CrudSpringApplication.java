@@ -1,5 +1,6 @@
 package com.gustavo.crudspring;
 
+import com.gustavo.crudspring.enums.Category;
 import com.gustavo.crudspring.models.Course;
 import com.gustavo.crudspring.repository.CourseRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -21,7 +22,7 @@ public class CrudSpringApplication {
 
 			Course c = new Course();
 			c.setName("Angular com Spring");
-			c.setCategory("Frontend");
+			c.setCategory(Category.FRONTEND);
 
 			courseRepository.save(c);
 		};
