@@ -26,6 +26,8 @@ export class CourseFormComponent implements OnInit{
     this.activatedRoute.data.subscribe({next: ({course}) => this.course = course})
     // this.course = this.activatedRoute.snapshot.data['course']
     this.form.setValue({_id: this.course._id, name: this.course.name, category: this.course.category})
+    console.log(this.course);
+
   }
 
   onSubmit(){
