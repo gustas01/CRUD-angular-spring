@@ -2,6 +2,7 @@ package com.gustavo.crudspring;
 
 import com.gustavo.crudspring.enums.Category;
 import com.gustavo.crudspring.models.Course;
+import com.gustavo.crudspring.models.Lesson;
 import com.gustavo.crudspring.repository.CourseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -23,6 +24,13 @@ public class CrudSpringApplication {
 			Course c = new Course();
 			c.setName("Angular com Spring");
 			c.setCategory(Category.FRONTEND);
+
+			Lesson lesson = new Lesson();
+			lesson.setName("Título da aula");
+			lesson.setYoutubeUrl("URLyoutube");
+			lesson.setCourse(c);
+
+			c.getLessons().add(lesson);
 
 			courseRepository.save(c);
 		};
