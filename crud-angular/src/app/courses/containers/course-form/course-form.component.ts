@@ -14,14 +14,14 @@ import { Lesson } from '../../model/lesson';
 })
 export class CourseFormComponent implements OnInit{
 
-  course!: Course
-  form!: FormGroup
+  course!: Course;
+  form!: FormGroup;
 
 
   constructor(private formBuilder: NonNullableFormBuilder, private courseService: CoursesService, private snackBar: MatSnackBar, private location: Location, private activatedRoute: ActivatedRoute){}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe({next: ({course}) => this.course = course})
+    this.activatedRoute.data.subscribe({next: ({course}) => this.course = course});
     this.form = this.formBuilder.group({
     _id: [this.course._id],
     name: [this.course.name, [Validators.required, Validators.minLength(5), Validators.maxLength(100)]],
@@ -33,11 +33,11 @@ export class CourseFormComponent implements OnInit{
   private retrieveLessons(course: Course){
     const lessons = []
     if(course?.lessons){
-      course.lessons.forEach(lesson => lessons.push(this.createLesson(lesson)))
+      course.lessons.forEach(lesson => lessons.push(this.createLesson(lesson)));
     }else {
-      lessons.push(this.createLesson())
+      lessons.push(this.createLesson());
     }
-    return lessons
+    return lessons;
   }
 
   private createLesson(lesson: Lesson = {id: '', name: '', youtubeUrl: ''}){
@@ -49,7 +49,17 @@ export class CourseFormComponent implements OnInit{
   }
 
   getLessonsFormArray(){
-    return (<UntypedFormArray>this.form.get('lessons')).controls
+    return (<UntypedFormArray>this.form.get('lessons')).controls;
+  }
+
+  addNewLesson(){
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.push(this.createLesson());
+  }
+
+  removeLesson(index: number){
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons.removeAt(index);
   }
 
   onSubmit(){
